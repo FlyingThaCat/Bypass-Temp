@@ -44,62 +44,62 @@ printer(){
     fi
 }
 
-# #Check if adb is installed
-# if ! [ -x "$(command -v adb)" ]; then
-#     echo ""
-#     printer "error" "Error: adb is not installed." >&2
-#     exit 1
-# fi
+#Check if adb is installed
+if ! [ -x "$(command -v adb)" ]; then
+    echo ""
+    printer "error" "Error: adb is not installed." >&2
+    exit 1
+fi
 
-# # make sure to pause and wait for user to connect device
-# echo ""
-# printer "info" "Please connect your device and press enter to continue."
-# read -p ""
+# make sure to pause and wait for user to connect device
+echo ""
+printer "info" "Please connect your device and press enter to continue."
+read -p ""
 
-# # loop check until device is connected
-# while ! [ -n "$(adb devices | sed -n 2p)" ]; do
-#     :
-# done
+# loop check until device is connected
+while ! [ -n "$(adb devices | sed -n 2p)" ]; do
+    :
+done
 
-# # # Check if device is connected and strip the first line
-# if ! [ -n "$(adb devices | sed -n 2p)" ]; then
-#     printer "error" "Error: Device is not connected." >&2
-#     exit 1
-# else
-#     printer "success" "Device is connected."
-# fi
+# # Check if device is connected and strip the first line
+if ! [ -n "$(adb devices | sed -n 2p)" ]; then
+    printer "error" "Error: Device is not connected." >&2
+    exit 1
+else
+    printer "success" "Device is connected."
+fi
 
-# # while loop to check if device is unauthorized and retry until authorized
-# while ! [ -n "$(adb devices | sed -n 2p | grep -o device)" ]; do
-#     :
-# done
+# while loop to check if device is unauthorized and retry until authorized
+while ! [ -n "$(adb devices | sed -n 2p | grep -o device)" ]; do
+    :
+done
 
-# # Check if device is authorized
-# if ! [ -n "$(adb devices | sed -n 2p | grep -o device)" ]; then
-#     printer "error" "Error: Device is not authorized." >&2
-#     exit 1
-# else
-#     printer "success" "Device is authorized."
-# fi
+# Check if device is authorized
+if ! [ -n "$(adb devices | sed -n 2p | grep -o device)" ]; then
+    printer "error" "Error: Device is not authorized." >&2
+    exit 1
+else
+    printer "success" "Device is authorized."
+fi
 
-# # Enable root
-# adb root
+# Enable root
+adb root
 
-# # check if root is enabled
-# if ! [ -n "$(adb shell id | grep -o root)" ]; then
-#     printer "error" "Error: Device is not rooted." >&2
-#     exit 1
-# else
-#     printer "success" "Device is rooted."
-# fi
+# check if root is enabled
+if ! [ -n "$(adb shell id | grep -o root)" ]; then
+    printer "error" "Error: Device is not rooted." >&2
+    exit 1
+else
+    printer "success" "Device is rooted."
+fi
 
-# # inject battery temp
-# adb shell "echo 200 > /sys/class/power_supply/battery/temp"
+# inject battery temp
+adb shell "echo 200 > /sys/class/power_supply/battery/temp"
 
-# # check if battery temp is injected
-# if ! [ -n "$(adb shell cat /sys/class/power_supply/battery/temp | grep -o 200)" ]; then
-#     printer "error" "Error: Battery temp is not injected." >&2
-#     exit 1
-# else
-#     printer "success" "Battery temp is injected."
-# fi
+# check if battery temp is injected
+if ! [ -n "$(adb shell cat /sys/class/power_supply/battery/temp | grep -o 200)" ]; then
+    printer "error" "Error: Battery temp is not injected." >&2
+    exit 1
+else
+    printer "success" "Battery temp is injected."
+fi
